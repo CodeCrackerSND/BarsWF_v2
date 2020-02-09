@@ -1,0 +1,47 @@
+https://github.com/polyminer1/rhminer/blob/master/cudalib/cuda_helper.h
+https://github.com/0xbitcoin/0xbitcoin-miner/blob/master/cpp/cuda_helper.h
+https://github.com/zcoinofficial/ccminer/blob/master/cuda_helper.h
+https://rev.ng/gitlab/revng-bar-2019/clang/blob/ceac5045d938b3c96f736a4f1cbc5299c23c3837/lib/Headers/__clang_cuda_intrinsics.h
+https://git.minegate.eu/jean-m-cyr/ethminer/blob/0dfc700fe74f58f92ff0fee37b9a7da437c38f86/libethash-cuda/cuda_helper.h
+
+https://bitcointalk.org/index.php?topic=163750.0
+
+#if __CUDA_ARCH__ < 320
+#ifdef __CUDA_ARCH__
+    // Kepler (Compute 3.0)
+    #define ROTL32(x, n) ((x) << (n)) | ((x) >> (32 - (n)))
+#endif
+#else
+// Kepler (Compute 3.5, 5.0)
+__device__ __forceinline__ uint32_t ROTL32(const uint32_t x, const uint32_t n)
+{
+	return(__funnelshift_l((x), (x), (n)));
+}
+#endif
+#if __CUDA_ARCH__ < 320
+#ifdef __CUDA_ARCH__
+    // Kepler (Compute 3.0)
+    #define ROTR32(x, n) (((x) >> (n)) | ((x) << (32 - (n))))
+#endif
+#else
+__device__ __forceinline__ uint32_t ROTR32(const uint32_t x, const uint32_t n)
+{
+	return(__funnelshift_r((x), (x), (n)));
+}
+#endif
+
+
+
+
+C:\Documents and Settings\All Users\Application Data\NVIDIA Corporation\CUDA Samples\v6.5\0_Simple\matrixMul
+
+CUDA C/C++
+1. submenu Device
+Code Generation:
+compute_11,sm_11;compute_20,sm_20;compute_30,sm_30;compute_35,sm_35;compute_37,sm_37;compute_50,sm_50;
+2. submenu Common
+Additional Include Directories
+./;../../common/inc
+
+https://stackoverflow.com/questions/33276539/caffe-cuda-error-8-vs-0-invalid-device-function-when-using-gpu-geforce-gt?rq=1
+

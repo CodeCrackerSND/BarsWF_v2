@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cu;cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\algo">
+      <UniqueIdentifier>{b22f9fce-1ca6-4a63-a122-aae8edb82f3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\algo\md5">
+      <UniqueIdentifier>{0ecdc2d0-9a9a-4d5b-aea5-c2a8668b743f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\helpers">
+      <UniqueIdentifier>{4a0a3775-1222-4124-9db3-41d97d4ad3c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="console_stuff.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="global.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="md5.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="md5_simple.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="perm.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="sse2_helpers.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\algo.cpp">
+      <Filter>src\algo</Filter>
+    </ClCompile>
+    <ClCompile Include="algo\md5\algo_md5.cpp">
+      <Filter>src\algo\md5</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="console_stuff.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="md5_simple.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="perm.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="sse2_helpers.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="stdint.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="algo\algo.h">
+      <Filter>src\algo</Filter>
+    </ClInclude>
+    <ClInclude Include="algo\md5\algo_md5.h">
+      <Filter>src\algo\md5</Filter>
+    </ClInclude>
+    <ClInclude Include="algo\md5\md5.h">
+      <Filter>src\algo\md5</Filter>
+    </ClInclude>
+    <ClInclude Include="algo\md5\md5_kernel.h">
+      <Filter>src\algo\md5</Filter>
+    </ClInclude>
+    <ClInclude Include="thread_launchers.h">
+      <Filter>src\helpers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="algo\md5\md5_kernel.cu">
+      <Filter>src\algo\md5</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="algo\md5\md5_sse2.inc">
+      <Filter>src\algo\md5</Filter>
+    </None>
+  </ItemGroup>
+</Project>

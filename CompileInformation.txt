@@ -1,0 +1,53 @@
+This is a Visual Sudio 2010 project,
+I've used Visual Studio 2010 Ultimate 
+
+For compiling barswf_cuda you need to install cudatoolkit_4.0.17_win_32.msi
+D:\BarsWF-master\barswf_cuda.vcxproj : error  : The imported project "C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\BuildCustomizations\CUDA 4.0.props" was not found. Confirm that the path in the <Import> declaration is correct, and that the file exists on disk.  D:\BarsWF-master\barswf_cuda.vcxproj
+You need to install:
+cudatoolkit_4.0.17_win_32.msi
+Download link:
+http://www.gmrv.es/~mgarcia/jose/Material/Toolkit%20y%20SDK/
+https://drivers.softpedia.com/get/Other-DRIVERS-TOOLS/NVIDIA/Nvidia-CUDA-Toolkit-429-x32.shtml
+Project compatible only with 4.x version of cudatoolkit,
+so you can also use cudatoolkit_4.2.9_win_32.msi
+
+I have Geforce 210 video card (old one - I know)
+and seems that the last cuda compatible with this video card is cuda_6.5.14_winxp_general_32.exe.
+Also that Geforce 210 video card is only compute_12 - crap!!!
+
+You will also need Intel C++ Compiler for faster speed!
+Intel C++ Compiler v11.xx supports Visual Studio 2008 and not latter VS like 2010
+Intel Parallel Studio XE 2013 - Intel(R) C++ Composer XE 2013 SP1 (w_ccompxe_2013_sp1.3.202.exe)
+includes Intel C++ Compiler and supports Visual Studio 2010.
+Download link:
+https://www.softpedia.com/get/Programming/Coding-languages-Compilers/Intel-Cplusplus-Composer-XE.shtml
+
+You should include the lib folder (in Library Directories):
+C:\Program Files\Intel\Composer XE 2013 SP1\compiler\lib\ia32
+AND NOT
+C:\Program Files\Intel\Compiler\11.1\067\lib\ia32
+
+You should include the libirc.lib from Intel C++ Compiler (already did that).
+With Intel C++ Compiler the /O2 optimization is faster then /O3 optimization!
+Favor small code (/Os) also produces faster code then Favor fast code (/Ot)
+
+Intel Parallel Studio XE 2016 (compiler 16.0) VS2010, VS2012, VS2013, VS2015 (includes VS2013 Shell)
+unfortunalety doesn't work on Windows XP, so let's use this one:
+Intel Parallel Studio XE 2015 Update 2:
+https://www.softpedia.com/get/Programming/Other-Programming-Files/Intel-Parallel-Studio-XE.shtml
+
+
+
+CUDA with Intel Compiler compile problems:
+nvcc fatal : '[Value]': expected a number
+https://social.technet.microsoft.com/Forums/en-US/c97adc16-0de1-4ae3-8628-044c9030b2fc/compiling-64bit-cuda-using-windows-sdk-71-and-vc-2010-express?forum=Offtopic
+
+Open the file C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\BuildCustomizations\CUDA 4.0.props, and edit following lines:
+
+<!--
+        <CudaClVersion Condition="'$(PlatformToolset)' == 'v90'">2008</CudaClVersion>
+        <CudaClVersion Condition="'$(PlatformToolset)' == 'v100'">2010</CudaClVersion>
+-->
+        <CudaClVersion>2010</CudaClVersion>
+
+

@@ -1,0 +1,175 @@
+#include "md5.h"
+#include "../../global_c.h"
+
+#define k01 0
+#define k02 0
+#define k03 0
+#define k04 0
+#define k05 0
+#define k06 0
+
+/*							  int _k11<>,int k21<>,int k31<>,int k41<>,
+							  int _k12<>,int k22<>,int k32<>,int k42<>,
+							  int _k13<>,int k23<>,int k33<>,int k43<>,
+							  int _k14<>,int k24<>,int k34<>,int k44<>,
+							  int _k15<>,int k25<>,int k35<>,int k45<>,*/
+							  
+kernel void hello_brook_check(int k1, int k2, int k3, int k4, int len, int _ta, int _tb, int _tc, int _td, int charset[], int charset_len, out int output<>)
+//first index - key dword, second index - thread
+{
+	int res,s1,s2,val1,val2,mask1,mask2;
+	//MD5 values
+	int a1,b1,c1,d1;
+	int a2,b2,c2,d2;
+	int a3,b3,c3,d3;
+	int a4,b4,c4,d4;
+	int a5,b5,c5,d5;
+
+	//targets
+	int ta1,tb1,tc1,td1;
+	int ta2,tb2,tc2,td2;
+	int ta3,tb3,tc3,td3;
+	int ta4,tb4,tc4,td4;
+	int ta5,tb5,tc5,td5;
+	
+	//keys
+	int k11, k21, k31, k41;
+	int k12, k22, k32, k42;
+	int k13, k23, k33, k43;
+	int k14, k24, k34, k44;
+	int k15, k25, k35, k45;
+
+	//lengths
+	int len1,len2,len3,len4,len5;
+
+	int pnum;//current position
+
+	pnum = ((int)(indexof(output).x))*5;
+
+	k11=k1+pnum+0; k21=k2+pnum+0+123; k31=k3+pnum+0+123; k41=k4+pnum+0+123;
+	k12=k1+pnum+1; k22=k2+pnum+1+233; k32=k3+pnum+1+343; k42=k4+pnum+1+343;
+	k13=k1+pnum+2; k23=k2+pnum+2+134; k33=k3+pnum+2+134; k43=k4+pnum+2+453;
+	k14=k1+pnum+3; k24=k2+pnum+3+453; k34=k3+pnum+3+453; k44=k4+pnum+3+145;
+	k15=k1+pnum+4; k25=k2+pnum+4+563; k35=k3+pnum+4+543; k45=k4+pnum+4+143;
+	
+
+	len1=len2=len3=len4=len5=len;
+	res = KEY_NOT_FOUND;
+	ta1=ta2=ta3=ta4=ta5=_ta;
+	tb1=tb2=tb3=tb4=tb5=_tb;
+	tc1=tc2=tc3=tc4=tc5=_tc;
+	td1=td2=td3=td4=td5=_td;
+	
+	//we are not going to write to stream
+//	k11 = _k11;k12 = _k12;k13 = _k13;k14 = _k14;k15 = _k15;
+
+	UL_5(tc, td, ta, tb, k3, S43, 0x2ad7d2bb,0,0); /* 63 */
+	UL_5(td, ta, tb, tc, k0, S42, 0xbd3af235,0,0); /* 62 */
+	UL_5(ta, tb, tc, td, k0, S41, 0xf7537e82,0,0); /* 61 */
+	UL_5(tb, tc, td, ta, k0, S44, 0x4e0811a1,0,0); /* 60 */
+	UL_5(tc, td, ta, tb, k0, S43, 0xa3014314,0,0); /* 59 */
+	UL_5(td, ta, tb, tc, k0, S42, 0xfe2ce6e0,0,0); /* 58 */
+	UL_5(ta, tb, tc, td, k0, S41, 0x6fa87e4f,0,0); /* 57 */
+	UL_5(tb, tc, td, ta, k2, S44, 0x85845dd1,0,0); /* 56 */
+	UL_5(tc, td, ta, tb, k0, S43, 0xffeff47d,0,0); /* 55 */
+	UL_5(td, ta, tb, tc, k4, S42, 0x8f0ccc92,0,0); /* 54 */
+	UL_5(ta, tb, tc, td, k0, S41, 0x655b59c3,0,0); /* 53 */
+	UL_5(tb, tc, td, ta, k0, S44, 0xfc93a039,0,0); /* 52 */
+	UL_5(tc, td, ta, tb, len, S43, 0xab9423a7,0,0); /* 51 */
+	UL_5(td, ta, tb, tc, k0, S42, 0x432aff97,0,0); /* 50 */
+
+
+	for(s2=0;s2<charset_len;s2++)
+	{
+		val1 = ((charset[s2])/*0x61+s2*/<<8);//
+		
+		k11=(k11&0xffff00ff)|val1;
+		k12=(k12&0xffff00ff)|val1;
+		k13=(k13&0xffff00ff)|val1;
+		k14=(k14&0xffff00ff)|val1;
+		k15=(k15&0xffff00ff)|val1;
+
+		for(s1=0;s1<charset_len;s1++)
+		{
+			val2=(charset[s1]);//;//0x61+s1
+
+			k11=(k11&0xffffff00)|val2;
+			k12=(k12&0xffffff00)|val2; 
+			k13=(k13&0xffffff00)|val2;
+			k14=(k14&0xffffff00)|val2;
+			k15=(k15&0xffffff00)|val2;
+			
+			a1=a2=a3=a4=a5=0x67452301;
+			b1=b2=b3=b4=b5=0xefcdab89;
+			c1=c2=c3=c4=c5=0x98badcfe;
+			d1=d2=d3=d4=d5=0x10325476;
+
+			/* Round 1 */
+			DO_5 (F,a, b, c, d, k1, S11, 0xd76aa478,0,0); /* 1 */
+			DO_5 (F,d, a, b, c, k2, S12, 0xe8c7b756,1,1); /* 2 */
+			DO_5 (F,c, d, a, b, k3, S13, 0x242070db,2,2); /* 3 */
+			DO_5 (F,b, c, d, a, k4, S14, 0xc1bdceee,3,3); /* 4 */
+
+
+			DO_5 (F,a, b, c, d, k0, S11, 0xf57c0faf,4,15); /* 5 */ //5th and so forth is 0
+			DO_5 (F,d, a, b, c, k0, S12, 0x4787c62a,5,15); /* 6 */
+			DO_5 (F,c, d, a, b, k0, S13, 0xa8304613,6,15); /* 7 */
+			DO_5 (F,b, c, d, a, k0, S14, 0xfd469501,7,15); /* 8 */
+			DO_5 (F,a, b, c, d, k0, S11, 0x698098d8,8,15); /* 9 */
+			DO_5 (F,d, a, b, c, k0, S12, 0x8b44f7af,9,15); /* 10 */
+			DO_5 (F,c, d, a, b, k0, S13, 0xffff5bb1,10,15); /* 11 */
+			DO_5 (F,b, c, d, a, k0, S14, 0x895cd7be,11,15); /* 12 */
+			DO_5 (F,a, b, c, d, k0, S11, 0x6b901122,12,15); /* 13 */
+			DO_5 (F,d, a, b, c, k0, S12, 0xfd987193,13,15); /* 14 */
+			DO_5 (F,c, d, a, b, len, S13, 0xa679438e,14,14); /* 15 */
+			DO_5 (F,b, c, d, a, k0, S14, 0x49b40821,15,15); /* 16 */
+
+			/* Round 2 */
+			DO_5 (G,a, b, c, d, k2, S21, 0xf61e2562,16,1); /* 17 */
+			DO_5 (G,d, a, b, c, k0, S22, 0xc040b340,17,15); /* 18 */
+			DO_5 (G,c, d, a, b, k0, S23, 0x265e5a51,18,15); /* 19 */
+			DO_5 (G,b, c, d, a, k1, S24, 0xe9b6c7aa,19,0); /* 20 */
+			DO_5 (G,a, b, c, d, k0, S21, 0xd62f105d,20,15); /* 21 */
+			DO_5 (G,d, a, b, c, k0, S22,  0x2441453,21,15); /* 22 */
+			DO_5 (G,c, d, a, b, k0, S23, 0xd8a1e681,22,15); /* 23 */
+			DO_5 (G,b, c, d, a, k0, S24, 0xe7d3fbc8,23,15); /* 24 */
+			DO_5 (G,a, b, c, d, k0, S21, 0x21e1cde6,24,15); /* 25 */
+			DO_5 (G,d, a, b, c, len, S22, 0xc33707d6,25,14); /* 26 */
+			DO_5 (G,c, d, a, b, k4, S23, 0xf4d50d87,26,3); /* 27 */
+			DO_5 (G,b, c, d, a, k0, S24, 0x455a14ed,27,15); /* 28 */
+			DO_5 (G,a, b, c, d, k0, S21, 0xa9e3e905,28,15); /* 29 */
+			DO_5 (G,d, a, b, c, k3, S22, 0xfcefa3f8,29,2); /* 30 */
+			DO_5 (G,c, d, a, b, k0, S23, 0x676f02d9,30,15); /* 31 */
+			DO_5 (G,b, c, d, a, k0, S24, 0x8d2a4c8a,31,15); /* 32 */
+
+			/* Round 3 */
+			DO_5 (H,a, b, c, d, k0, S31, 0xfffa3942,32,15); /* 33 */
+			DO_5 (H,d, a, b, c, k0, S32, 0x8771f681,33,15); /* 34 */
+			DO_5 (H,c, d, a, b, k0, S33, 0x6d9d6122,34,15); /* 35 */
+			DO_5 (H,b, c, d, a, len, S34, 0xfde5380c,35,14); /* 36 */
+			DO_5 (H,a, b, c, d, k2, S31, 0xa4beea44,36,1); /* 37 */
+			DO_5 (H,d, a, b, c, k0, S32, 0x4bdecfa9,37,15); /* 38 */
+			DO_5 (H,c, d, a, b, k0, S33, 0xf6bb4b60,38,15); /* 39 */
+			DO_5 (H,b, c, d, a, k0, S34, 0xbebfbc70,39,15); /* 40 */
+			DO_5 (H,a, b, c, d, k0, S31, 0x289b7ec6,40,15); /* 41 */
+			DO_5 (H,d, a, b, c, k1, S32, 0xeaa127fa,41,0); /* 42 */
+			DO_5 (H,c, d, a, b, k4, S33, 0xd4ef3085,42,3); /* 43 */
+			DO_5 (H,b, c, d, a, k0, S34,  0x4881d05,43,15); /* 44 */
+			DO_5 (H,a, b, c, d, k0, S31, 0xd9d4d039,44,15); /* 45 */
+			DO_5 (H,d, a, b, c, k0, S32, 0xe6db99e5,45,15); /* 46 */
+
+//			if(d1!=td1 && d2!=td2 && d3!=td3 && d4!=td4 && d5!=td5)continue;
+			DO_5 (H,c, d, a, b, k0, S33, 0x1fa27cf8,46,15); /* 47 */
+			DO_5 (H,b, c, d, a, k3, S34, 0xc4ac5665,47,2); /* 48 */
+			DO_5 (I,a, b, c, d, k1, S41, 0xf4292244,48,0); /* 49 */
+
+
+			if((a1==ta1 && b1==tb1 && c1==tc1 && d1==td1)||
+			  (a2==ta2 && b2==tb2 && c2==tc2 && d2==td2)||
+			  (a3==ta3 && b3==tb3 && c3==tc3 && d3==td3)||
+			  (a4==ta4 && b4==tb4 && c4==tc4 && d4==td4)||
+			  (a5==ta5 && b5==tb5 && c5==tc5 && d5==td5))res = KEY_FOUND;
+		}
+	}
+	output = res;
+}

@@ -1,0 +1,5 @@
+BarsWF main webpage
+https://3.14.by/en/md5/
+
+("set_charset,s", po::value<string>(&set_charset)->default_value(""), "Set charset - fallowed by characters string")
+

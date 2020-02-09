@@ -1,0 +1,7 @@
+# MS Visual Studio
+*.suo
+*.ncb
+*.pdb
+*.user
+*.sdf
+*.opensdf
